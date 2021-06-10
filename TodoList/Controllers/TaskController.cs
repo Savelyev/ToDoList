@@ -9,7 +9,7 @@ namespace TodoList.Controllers
 {
     [ApiController]
     [Route("api/tasks")]
-    public class TaskController : Controller
+    public class TaskController : ControllerBase
     {
         private ITaskRepository taskRepository;
 

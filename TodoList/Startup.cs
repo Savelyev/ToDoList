@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TodoList.Repository;
 using Microsoft.AspNetCore.Identity;
+using TodoList.Models.Password;
+using TodoList.Models.Password.Validator;
+using System.Collections.Generic;
 
 namespace TodoList
 {
@@ -24,7 +27,21 @@ namespace TodoList
         {
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationContext")));
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
+            services.AddIdentity<User, IdentityRole>(
+                opts => {
+                    opts.Password.RequiredLength = 8;
+                    opts.Password.RequireNonAlphanumeric = true;
+                    opts.Password.RequireLowercase = false;
+                    opts.Password.RequireUppercase = false;
+                    opts.Password.RequireDigit = true;
+                }).AddEntityFrameworkStores<ApplicationContext>();
+            services.AddTransient<IPasswordValidator<User>, UserPasswordValidator>(serv => new UserPasswordValidator(
+                new List<IValidator>
+                {
+                    new MinTwoCapitalValidator(),
+                    new NoWhitespaceValidator()
+                }
+            ));
 
             services.AddScoped<ITaskRepository, TaskRepository>();
 

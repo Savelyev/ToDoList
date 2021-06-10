@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Models;
+using TodoList.Repository;
 
 namespace TodoList.Controllers
 {
@@ -10,35 +11,23 @@ namespace TodoList.Controllers
     [Route("api/tasks")]
     public class TaskController : Controller
     {
-        ApplicationContext db;
-        public TaskController(ApplicationContext context)
+        private ITaskRepository taskRepository;
+
+        public TaskController(ITaskRepository taskRepository)
         {
-            db = context;
-            if (!db.Tasks.Any())
-            {
-                db.Tasks.Add(
-                    new Task { Id = Guid.NewGuid(), Title = "first", Description = "first", DueDateTime = new DateTime(2021, 6, 10, 15, 45, 0), Priority = Enum.PriorityLevel.HighLevel }
-                );
-                db.Tasks.Add(
-                    new Task { Id = Guid.NewGuid(), Title = "second", Description = "second", DueDateTime = new DateTime(2021, 6, 10, 16, 45, 0), Priority = Enum.PriorityLevel.MediumLevel }
-                );
-                db.Tasks.Add(
-                    new Task { Id = Guid.NewGuid(), Title = "first", Description = "first", DueDateTime = new DateTime(2021, 6, 10, 15, 45, 0), Priority = Enum.PriorityLevel.NoLevel }
-                );
-                db.SaveChanges();
-            }
+            this.taskRepository = taskRepository;
         }
 
         [HttpGet]
         public IEnumerable<Task> Get()
         {
-            return db.Tasks.ToList();
+            return taskRepository.GetList().OrderByDescending(x => x.DueDateTime);
         }
 
         [HttpGet("{id}")]
         public Task Get(Guid id)
         {
-            return db.Tasks.FirstOrDefault(x => x.Id == id);
+            return taskRepository.Get(id);
         }
 
         [HttpPost]
@@ -46,9 +35,7 @@ namespace TodoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Tasks.Add(task);
-                db.SaveChanges();
-                return Ok(task);
+                return Ok(taskRepository.Create(task));
             }
             return BadRequest(ModelState);
         }
@@ -58,9 +45,7 @@ namespace TodoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Update(task);
-                db.SaveChanges();
-                return Ok(task);
+                return Ok(taskRepository.Update(task));
             }
             return BadRequest(ModelState);
         }
@@ -68,13 +53,7 @@ namespace TodoList.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            Task task = db.Tasks.FirstOrDefault(x => x.Id == id);
-            if (task != null)
-            {
-                db.Tasks.Remove(task);
-                db.SaveChanges();
-            }
-            return Ok(task);
+            return Ok(taskRepository.Delete(id));
         }
     }
 }

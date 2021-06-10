@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using TodoList.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using TodoList.Repository;
 
 namespace TodoList
 {
@@ -23,6 +24,8 @@ namespace TodoList
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationContext")));
+
+            services.AddScoped<ITaskRepository, TaskRepository>();
 
             services.AddControllers();
 

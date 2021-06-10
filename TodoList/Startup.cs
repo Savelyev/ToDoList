@@ -7,23 +7,24 @@ using TodoList.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TodoList.Repository;
+using Microsoft.AspNetCore.Identity;
 
 namespace TodoList
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; set; }
+        public IConfiguration Configuration { get; set; }
 
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationContext")));
+
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddScoped<ITaskRepository, TaskRepository>();
 
@@ -48,6 +49,9 @@ namespace TodoList
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

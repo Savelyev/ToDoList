@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Task } from './task';
+import { Task } from './viewModel/task';
 
 @Injectable()
 export class DataService {

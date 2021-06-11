@@ -1,70 +1,13 @@
-﻿<h1>ToDo List</h1>
-<input type="button" value="Добавить" class="btn btn-default" (click)="add()" />
-<table *ngIf="tableMode; else create" class="table table-striped">
-    <thead>
-        <tr>
-            <td>Title</td>
-            <td>Description</td>
-            <td>Due Date Time</td>
-            <td>Priority</td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let t of tasks">
-            <ng-template [ngIf]="t?.id != task.id" [ngIfElse]="edit">
-                <td>{{t?.title}}</td>
-                <td>{{t?.description}}</td>
-                <td>{{t?.dueDateTime}}</td>
-                <td>{{t?.priority}}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" (click)="editTask(t)">Update</button>
-                    <button class="btn btn-sm btn-danger" (click)="delete(t)">Remove</button>
-                </td>
-            </ng-template>
-        </tr>
-    </tbody>
-</table>
-
-
-<ng-template #edit>
-    <td>
-        <input type="text" [(ngModel)]="task.title" class="form-control" />
-    </td>
-    <td>
-        <input type="text" [(ngModel)]="task.description" class="form-control" />
-    </td>
-    <td>
-        <input type="text" [(ngModel)]="task.dueDateTime" class="form-control" />
-    </td>
-    <td>
-        <input type="number" [(ngModel)]="task.priority" class="form-control" />
-    </td>
-    <td>
-        <input type="button" value="Save" (click)="save()" class="btn btn-sm btn-success" />
-        <input type="button" value="Cancel" (click)="cancel()" class="btn btn-sm btn-warning" />
-    </td>
-</ng-template>
-
-<ng-template #create>
-    <div class="form-group">
-        <label>Title</label>
-        <input type="text" [(ngModel)]="task.title" class="form-control" />
+﻿<div class="container">
+    <div class="row">
+        <div class="col">
+            <app-menu></app-menu>
+        </div>
     </div>
-    <div class="form-group">
-        <label>Description</label>
-        <input type="text" [(ngModel)]="task.description" class="form-control" />
+    <div class="row">
+        <div class="col">
+            <app-task-list></app-task-list>
+            
+        </div>
     </div>
-    <div class="form-group">
-        <label>Due Date Time</label>
-        <input type="text" [(ngModel)]="task.dueDateTime" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Priority</label>
-        <input type="number" [(ngModel)]="task.priority" class="form-control" />
-    </div>
-    <div>
-        <input type="button" value="Save" (click)="save()" class="btn btn-success" />
-        <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
-    </div>
-</ng-template>
+</div>

@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
-import { TaskListComponent } from './task-list/task-list.component';
 import { RouterModule } from '@angular/router'
 
 @NgModule({
@@ -13,15 +12,15 @@ import { RouterModule } from '@angular/router'
         FormsModule,
         HttpClientModule,
         RouterModule.forRoot([
-            { path: 'company', loadChildren: () => import('./company/company.module').then(m => m.CompanyModule) },
             { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
+            { path: 'tasks', loadChildren: () => import('./task-list/task.module').then(m => m.TaskModule) },
+            { path: '', redirectTo: '/tasks', pathMatch: 'full' },
             { path: '**', redirectTo: '/404', pathMatch: 'full' }
         ])
     ],
     declarations: [
         AppComponent,
-        MenuComponent,
-        TaskListComponent
+        MenuComponent
     ],
     bootstrap: [AppComponent]
 })

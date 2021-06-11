@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../viewModel/task';
-import { DataService } from '../data.service';
+import { TaskService } from '../services/task.service';
 
 @Component({
     selector: 'app-task-list',
     templateUrl: './task-list.component.html',
-    providers: [DataService]
+    providers: [TaskService]
 })
 export class TaskListComponent implements OnInit {
 
@@ -13,7 +13,7 @@ export class TaskListComponent implements OnInit {
     tasks: Task[];
     tableMode: boolean = true;
 
-    constructor(private dataService: DataService) { }
+    constructor(private dataService: TaskService) { }
 
     ngOnInit() {
         this.loadTasks();

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -10,7 +11,7 @@ export class MenuComponent implements OnInit {
 
     public isUserAuthenticated: boolean;
 
-    constructor(private _authService: AuthenticationService) { }
+    constructor(private _authService: AuthenticationService, private _router: Router) { }
 
     ngOnInit(): void {
         this._authService.authChanged

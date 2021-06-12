@@ -57,4 +57,5 @@ export class ErrorHandlerService implements HttpInterceptor {
             this._router.navigate(['/authentication/login']);
             return error.message;
         }
+    }
 }

@@ -6,6 +6,12 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { RouterModule } from '@angular/router';
 import { ErrorHandlerService } from './services/error-handler.service';
+import { JwtModule } from "@auth0/angular-jwt";
+import { AuthGuard } from './shared/guards/auth.guard';
+
+export function tokenGetter() {
+    return localStorage.getItem("token");
+}
 
 @NgModule({
     imports: [
@@ -14,10 +20,15 @@ import { ErrorHandlerService } from './services/error-handler.service';
         HttpClientModule,
         RouterModule.forRoot([
             { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
-            { path: 'tasks', loadChildren: () => import('./task-list/task.module').then(m => m.TaskModule) },
+            { path: 'tasks', loadChildren: () => import('./task-list/task.module').then(m => m.TaskModule), canActivate: [AuthGuard] },
             { path: '', redirectTo: '/tasks', pathMatch: 'full' },
             { path: '**', redirectTo: '/404', pathMatch: 'full' }
-        ])
+        ]),
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter
+            }
+        })
     ],
     declarations: [
         AppComponent,

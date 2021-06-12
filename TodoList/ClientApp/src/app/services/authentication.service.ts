@@ -5,6 +5,7 @@ import { AuthResponseViewModel } from './../viewModel/response/authResponseViewM
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthenticationService {
     private _authChangeSub = new Subject<boolean>()
     public authChanged = this._authChangeSub.asObservable();
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private _jwtHelper: JwtHelperService) { }
 
     public registerUser = (route: string, body: RegisterViewModel) => {
         return this.http.post<RegisterResponseViewModel>(route, body);
@@ -31,5 +32,11 @@ export class AuthenticationService {
     public logout = () => {
         localStorage.removeItem("token");
         this.sendAuthStateChangeNotification(false);
+    }
+
+    public isUserAuthenticated = (): boolean => {
+        const token = localStorage.getItem("token");
+
+        return token && !this._jwtHelper.isTokenExpired(token);
     }
 }

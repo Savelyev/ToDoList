@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Models;
 using TodoList.Repository;
@@ -8,6 +9,7 @@ using TodoList.Repository;
 namespace TodoList.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/tasks")]
     public class TaskController : ControllerBase
     {

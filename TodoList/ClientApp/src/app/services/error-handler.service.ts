@@ -25,11 +25,16 @@ export class ErrorHandlerService implements HttpInterceptor {
         else if (error.status === 400) {
             return this.handleBadRequest(error);
         }
+        else if (error.status === 401) {
+            return this.handleUnauthorized(error);
+        }
     }
+
     private handleNotFound = (error: HttpErrorResponse): string => {
         this._router.navigate(['/404']);
         return error.message;
     }
+
     private handleBadRequest = (error: HttpErrorResponse): string => {
         if (this._router.url === '/authentication/register') {
             let message = '';
@@ -43,4 +48,13 @@ export class ErrorHandlerService implements HttpInterceptor {
             return error.error ? error.error : error.message;
         }
     }
+
+    private handleUnauthorized = (error: HttpErrorResponse) => {
+        if (this._router.url === '/authentication/login') {
+            return 'Authentication failed. Wrong Username or Password';
+        }
+        else {
+            this._router.navigate(['/authentication/login']);
+            return error.message;
+        }
 }

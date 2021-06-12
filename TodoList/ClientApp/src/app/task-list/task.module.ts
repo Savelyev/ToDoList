@@ -4,7 +4,6 @@ import { TaskListComponent } from './task-list.component';
 import { RouterModule } from '@angular/router';
 
 
-
 @NgModule({
     declarations: [TaskListComponent],
     imports: [

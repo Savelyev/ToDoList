@@ -1,10 +1,11 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
-import { RouterModule } from '@angular/router'
+import { RouterModule } from '@angular/router';
+import { ErrorHandlerService } from './services/error-handler.service';
 
 @NgModule({
     imports: [
@@ -22,6 +23,13 @@ import { RouterModule } from '@angular/router'
         AppComponent,
         MenuComponent
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorHandlerService,
+            multi: true
+        }
+    ],
 })
 export class AppModule { }

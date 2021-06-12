@@ -17,6 +17,12 @@ Hi there! This's my test task for Mentalstack.
   "AllowedHosts": "*",
   "ConnectionStrings": {
     "ApplicationContext": "Server={{CONNECTION_TO_YOUR_DB(example: (LocalDB)\\MSSQLLocalDB)}};Database={{YOUR_DB_NAME}};Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "JWTSettings": {
+    "securityKey": "{{YOUR_SECURITY_KEY}}",
+    "validIssuer": "{{YOUR_ISSUER (example: ToDoListAPI)}}",
+    "validAudience": "{{YOUR_AUDIENCE (example: http://localhost:5011)}}",
+    "expiryInMinutes": 5
   }
 }
 ```

@@ -28,10 +28,10 @@
         <div class="main-page-content">
             <div class="todo-main">
                 <div class="todo-list">
-                    <div class="todo-group">
-                        <p class="todo-group__date">Today, January 16</p>
+                    <div class="todo-group" *ngFor="let groupTask of groupTasks | keyvalue">
+                        <p class="todo-group__date">{{groupTask.key}}</p>
 
-                        <div class="todo-group-content" *ngFor="let t of tasks">
+                        <div class="todo-group-content" *ngFor="let t of groupTask.value">
 
                             <div class="todo-item">
                                 <div class="todo-item__main">
@@ -44,18 +44,18 @@
 
                                         <div class="todo-item-details">
                                             <div class="todo-item-details__item">
-                                                <span class="todo-item-details__icon _priority _urgent"></span>
+                                                <span class="todo-item-details__icon _priority _{{t?.priority.toLowerCase()}}"></span>
                                                 <span class="todo-item-details__text">{{t?.priority}} priority</span>
                                             </div>
 
                                             <div class="todo-item-details__item">
                                                 <img src="assets/img/clock.svg" class="todo-item-details__icon _icon">
-                                                <span class="todo-item-details__text">{{t?.dueDateTime}}</span>
+                                                <span class="todo-item-details__text">{{t?.dueTime}}</span>
                                             </div>
 
                                             <div class="todo-item-details__item">
                                                 <img src="assets/img/alarm.svg" class="todo-item-details__icon _icon">
-                                                <span class="todo-item-details__text">1 hour</span>
+                                                <span class="todo-item-details__text">{{t?.notificationPeriod}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -82,23 +82,24 @@
                         </div>
                         <div class="todo-create-form-details">
                             <div class="todo-create-options">
-                                <input class="form-input _sm" type="date" formControlName="dueDateTime">
-                                <input class="form-input _sm" type="time">
-                                <select class="form-input _sm">
-                                    <option value="">5 min</option>
-                                    <option value="">10 min</option>
-                                    <option value="">30 min</option>
-                                    <option value="">1 hour</option>
-                                    <option value="">3 hour</option>
-                                    <option value="">3 hours</option>
-                                    <option value="">1 day</option>
-                                    <option value="">1 week</option>
+                                <input class="form-input _sm" type="date" formControlName="dueDate">
+                                <input class="form-input _sm" type="time" formControlName="dueTime">
+                                <select class="form-input _sm" formControlName="notificationPeriod">
+                                    <option value="0">5 min</option>
+                                    <option value="1">10 min</option>
+                                    <option value="3">30 min</option>
+                                    <option value="4">1 hour</option>
+                                    <option value="5">3 hour</option>
+                                    <option value="6">3 hours</option>
+                                    <option value="7">1 day</option>
+                                    <option value="8">1 week</option>
                                 </select>
+
                                 <select class="form-input _sm" formControlName="priority">
-                                    <option value="1">Urgent</option>
-                                    <option value="2">Important</option>
+                                    <option value="0">Urgent</option>
+                                    <option value="1">Important</option>
+                                    <option value="2">Normal</option>
                                     <option value="3">Neutral</option>
-                                    <option value="4">Normal</option>
                                 </select>
 
                             </div>

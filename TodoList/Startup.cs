@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TodoList.JwtFeatures;
+using TodoList.Jobs;
 
 namespace TodoList
 {
@@ -77,6 +78,8 @@ namespace TodoList
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            TaskSheduler.Start();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

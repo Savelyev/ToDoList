@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
 import { RouterModule } from '@angular/router';
 import { ErrorHandlerService } from './services/error-handler.service';
 import { JwtModule } from "@auth0/angular-jwt";
@@ -30,8 +29,7 @@ export function tokenGetter() {
         })
     ],
     declarations: [
-        AppComponent,
-        MenuComponent
+        AppComponent
     ],
     bootstrap: [AppComponent],
     providers: [

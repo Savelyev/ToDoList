@@ -2,9 +2,9 @@
 {
     public enum PriorityLevel
     {
-        HighLevel,
-        MediumLevel,
-        LowLevel,
-        NoLevel
+        Urgent,
+        Important,
+        Normal,
+        Neutral
     }
 }

@@ -25,6 +25,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Quartz" Version="3.3.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,27 @@
     <TypeScriptCompile Include="ClientApp\src\app\app.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\main.ts" />
     <TypeScriptCompile Include="ClientApp\src\polyfills.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\src\app\viewModel\task\task - Copy - Copy.js">
+      <DependentUpon>task - Copy.js</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\viewModel\task\task - Copy - Copy.js.map">
+      <DependentUpon>task - Copy.js.map</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\viewModel\task\task - Copy.js">
+      <DependentUpon>taskViewModel.js</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\viewModel\task\task - Copy.js.map">
+      <DependentUpon>taskViewModel.js.map</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\viewModel\task\taskViewModel - Copy.js">
+      <DependentUpon>taskViewModel.js</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\viewModel\task\taskViewModel - Copy.js.map">
+      <DependentUpon>taskViewModel.js.map</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

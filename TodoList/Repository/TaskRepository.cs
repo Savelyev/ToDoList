@@ -16,11 +16,10 @@ namespace TodoList.Repository
 
         public IEnumerable<Task> GetList(string userId)
         {
-            
             return applicationContext.Tasks
                 .ToList()
-                .OrderByDescending(x => x.DueDateTime)
-                .Where(u => u.UserId == userId);
+                .OrderBy(x => x.DueDateTime)
+                .Where(u => u.UserId == userId && u.IsActive);
         }
 
         public Task Get(Guid id, string userId)
@@ -33,6 +32,7 @@ namespace TodoList.Repository
             try
             {
                 task.UserId = userId;
+                task.IsActive = true;
                 applicationContext.Tasks.Add(task);
                 applicationContext.SaveChanges();
             } 

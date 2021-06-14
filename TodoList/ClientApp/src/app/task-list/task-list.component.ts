@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Task } from '../viewModel/task';
+import { TaskRequest } from '../viewModel/task/taskRequest';
+import { TaskViewModel } from '../viewModel/task/taskViewModel';
 import { TaskService } from '../services/task.service';
-import { FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-task-list',
@@ -11,9 +12,7 @@ import { FormControl, FormGroup} from '@angular/forms';
 export class TaskListComponent implements OnInit {
 
     public createTaskForm: FormGroup;
-    task: Task = new Task();
-    tasks: Task[];
-    tableMode: boolean = true;
+    public groupTasks: any[];
 
     constructor(private dataService: TaskService) { }
 
@@ -21,61 +20,44 @@ export class TaskListComponent implements OnInit {
         this.createTaskForm = new FormGroup({
             title: new FormControl(''),
             description: new FormControl(''),
-            dueDateTime: new FormControl(''),
+            dueDate: new FormControl(''),
+            dueTime: new FormControl(''),
             priority: new FormControl(''),
+            notificationPeriod: new FormControl(''),
         });
         this.loadTasks();
     }
 
     loadTasks() {
+        this.groupTasks = []
         this.dataService.getTasks()
-            .subscribe((data: Task[]) => this.tasks = data);
-    }
+            .subscribe((data: TaskViewModel[]) => {
+                data.forEach((element) => {
+                    if (this.groupTasks[element.dueDate]) {
+                        this.groupTasks[element.dueDate].push(element);
+                    } else {
+                        this.groupTasks[element.dueDate] = [element]  
+                    }
 
-    sav2e() {
-        if (this.task.id == null) {
-            this.dataService.createTask(this.task)
-                .subscribe((data: Task) => this.tasks.push(data));
-        } else {
-            this.dataService.updateTask(this.task)
-                .subscribe(data => this.loadTasks());
-        }
-        this.cancel();
+                })
+            });
     }
 
     public save = (formValue) => {
         const formValues = { ...formValue };
-        const task: Task = {
+        const task: TaskRequest = {
             description: formValues.description,
-            dueDateTime: formValues.dueDateTime,
+            dueDateTime: new Date(formValues.dueDate + " " + formValues.dueTime),
             priority: Number(formValues.priority),
             title: formValues.title,
+            notificationPeriod: Number(formValues.notificationPeriod),
         };
-        if (this.task.id == null) {
-            this.dataService.createTask(task)
-                .subscribe((data: Task) => this.tasks.push(data));
-        } else {
-            this.dataService.updateTask(task)
-                .subscribe(data => this.loadTasks());
-        }
+        this.dataService.createTask(task)
+            .subscribe(() => this.loadTasks());
     }
 
-    editTask(task: Task) {
-        this.task = task;
-    }
-
-    cancel() {
-        this.task = new Task();
-        this.tableMode = true;
-    }
-
-    delete(task: Task) {
+    delete(task: TaskViewModel) {
         this.dataService.deleteTask(task.id)
             .subscribe(data => this.loadTasks());
-    }
-
-    add() {
-        this.cancel();
-        this.tableMode = false;
     }
 }

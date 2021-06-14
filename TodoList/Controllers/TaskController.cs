@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Models;
 using TodoList.Repository;
+using TodoList.ViewModel;
 
 namespace TodoList.Controllers
 {
@@ -25,9 +26,9 @@ namespace TodoList.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Task> Get()
+        public IEnumerable<TaskViewModel> Get()
         {
-            return taskRepository.GetList(getUserId());
+            return taskRepository.GetList(getUserId()).Select(t => new TaskViewModel(t));
         }
 
         [HttpGet("{id}")]

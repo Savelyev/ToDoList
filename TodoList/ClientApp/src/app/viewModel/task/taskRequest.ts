@@ -1,4 +1,4 @@
-﻿export class Task {
+﻿export class TaskRequest {
     constructor(
         public id?: string,
         public title?: string,

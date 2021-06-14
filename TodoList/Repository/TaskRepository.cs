@@ -14,20 +14,25 @@ namespace TodoList.Repository
             this.applicationContext = applicationContext;
         }
 
-        public IEnumerable<Task> GetList()
+        public IEnumerable<Task> GetList(string userId)
         {
-            return applicationContext.Tasks.ToList();
+            
+            return applicationContext.Tasks
+                .ToList()
+                .OrderByDescending(x => x.DueDateTime)
+                .Where(u => u.UserId == userId);
         }
 
-        public Task Get(Guid id)
+        public Task Get(Guid id, string userId)
         {
-            return applicationContext.Tasks.FirstOrDefault(x => x.Id == id);
+            return applicationContext.Tasks.FirstOrDefault(x => x.Id == id && x.UserId == userId);
         }
 
-        public Task Create(Task task)
+        public Task Create(Task task, string userId)
         {
             try
             {
+                task.UserId = userId;
                 applicationContext.Tasks.Add(task);
                 applicationContext.SaveChanges();
             } 
@@ -37,10 +42,14 @@ namespace TodoList.Repository
             return task;
         }
 
-        public Task Update(Task task)
+        public Task Update(Task task, string userId)
         {
             try
             {
+                if (task.UserId != userId)
+                {
+                    return task;
+                }
                 applicationContext.Update(task);
                 applicationContext.SaveChanges();
             }
@@ -50,9 +59,9 @@ namespace TodoList.Repository
             return task;
         }
 
-        public Task Delete(Guid id)
+        public Task Delete(Guid id, string userId)
         {
-            Task task = applicationContext.Tasks.FirstOrDefault(x => x.Id == id);
+            Task task = applicationContext.Tasks.FirstOrDefault(x => x.Id == id && x.UserId == userId);
             try
             {
                 if (task != null)

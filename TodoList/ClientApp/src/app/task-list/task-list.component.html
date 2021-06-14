@@ -1,70 +1,117 @@
-<h1>ToDo List</h1>
-<input type="button" value="Add" class="btn btn-default" (click)="add()" />
-<table *ngIf="tableMode; else create" class="table table-striped">
-    <thead>
-        <tr>
-            <td>Title</td>
-            <td>Description</td>
-            <td>Due Date Time</td>
-            <td>Priority</td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let t of tasks">
-            <ng-template [ngIf]="t?.id != task.id" [ngIfElse]="edit">
-                <td>{{t?.title}}</td>
-                <td>{{t?.description}}</td>
-                <td>{{t?.dueDateTime}}</td>
-                <td>{{t?.priority}}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" (click)="editTask(t)">Update</button>
-                    <button class="btn btn-sm btn-danger" (click)="delete(t)">Remove</button>
-                </td>
-            </ng-template>
-        </tr>
-    </tbody>
-</table>
+﻿<div class="main-page">
+
+    <div class="main-page-container">
+        <aside class="sidebar">
+            <img src="assets/img/logo.png" alt="" class="sidebar-logo">
+
+            <p class="sidebar-subtitle">Priority</p>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu__item _current">
+                    <a href="" class="sidebar-menu__link">All</a>
+                </li>
+                <li class="sidebar-menu__item">
+                    <a href="" class="sidebar-menu__link">Urgently</a>
+                </li>
+                <li class="sidebar-menu__item">
+                    <a href="" class="sidebar-menu__link">Important</a>
+                </li>
+                <li class="sidebar-menu__item">
+                    <a href="" class="sidebar-menu__link">Normal</a>
+                </li>
+                <li class="sidebar-menu__item">
+                    <a href="" class="sidebar-menu__link">Neutral</a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="main-page-content">
+            <div class="todo-main">
+                <div class="todo-list">
+                    <div class="todo-group">
+                        <p class="todo-group__date">Today, January 16</p>
+
+                        <div class="todo-group-content" *ngFor="let t of tasks">
+
+                            <div class="todo-item">
+                                <div class="todo-item__main">
+                                    <div class="todo-item__checkbox">
+                                        <input type="checkbox">
+                                    </div>
+                                    <div class="todo-item__content">
+                                        <h2 class="todo-item__title">{{t?.title}}</h2>
+                                        <p class="todo-item__description">{{t?.description}}</p>
+
+                                        <div class="todo-item-details">
+                                            <div class="todo-item-details__item">
+                                                <span class="todo-item-details__icon _priority _urgent"></span>
+                                                <span class="todo-item-details__text">{{t?.priority}} priority</span>
+                                            </div>
+
+                                            <div class="todo-item-details__item">
+                                                <img src="assets/img/clock.svg" class="todo-item-details__icon _icon">
+                                                <span class="todo-item-details__text">{{t?.dueDateTime}}</span>
+                                            </div>
+
+                                            <div class="todo-item-details__item">
+                                                <img src="assets/img/alarm.svg" class="todo-item-details__icon _icon">
+                                                <span class="todo-item-details__text">1 hour</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="todo-item__actions">
+                                    <button class="todo-item__action" (click)="delete(t)">
+                                        <img class="todo-item__action-icon" src="assets/img/delete.svg" alt="">
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="todo-create">
+                    <form [formGroup]="createTaskForm" autocomplete="off" novalidate (ngSubmit)="save(createTaskForm.value)" class="auth-form">
+                        <div class="form-container">
+                            <input type="text" class="form-input" formControlName="title" placeholder="Enter task title">
+                        </div>
+                        <div class="form-container">
+                            <input type="text" class="form-input" formControlName="description" placeholder="Enter task description">
+                        </div>
+                        <div class="todo-create-form-details">
+                            <div class="todo-create-options">
+                                <input class="form-input _sm" type="date" formControlName="dueDateTime">
+                                <input class="form-input _sm" type="time">
+                                <select class="form-input _sm">
+                                    <option value="">5 min</option>
+                                    <option value="">10 min</option>
+                                    <option value="">30 min</option>
+                                    <option value="">1 hour</option>
+                                    <option value="">3 hour</option>
+                                    <option value="">3 hours</option>
+                                    <option value="">1 day</option>
+                                    <option value="">1 week</option>
+                                </select>
+                                <select class="form-input _sm" formControlName="priority">
+                                    <option value="1">Urgent</option>
+                                    <option value="2">Important</option>
+                                    <option value="3">Neutral</option>
+                                    <option value="4">Normal</option>
+                                </select>
+
+                            </div>
+
+                            <button class="todo-create-form-btn">Send</button>
+                        </div>
 
 
-<ng-template #edit>
-    <td>
-        <input type="text" [(ngModel)]="task.title" class="form-control" />
-    </td>
-    <td>
-        <input type="text" [(ngModel)]="task.description" class="form-control" />
-    </td>
-    <td>
-        <input type="text" [(ngModel)]="task.dueDateTime" class="form-control" />
-    </td>
-    <td>
-        <input type="number" [(ngModel)]="task.priority" class="form-control" />
-    </td>
-    <td>
-        <input type="button" value="Save" (click)="save()" class="btn btn-sm btn-success" />
-        <input type="button" value="Cancel" (click)="cancel()" class="btn btn-sm btn-warning" />
-    </td>
-</ng-template>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<ng-template #create>
-    <div class="form-group">
-        <label>Title</label>
-        <input type="text" [(ngModel)]="task.title" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Description</label>
-        <input type="text" [(ngModel)]="task.description" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Due Date Time</label>
-        <input type="text" [(ngModel)]="task.dueDateTime" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Priority</label>
-        <input type="number" [(ngModel)]="task.priority" class="form-control" />
-    </div>
-    <div>
-        <input type="button" value="Save" (click)="save()" class="btn btn-success" />
-        <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
-    </div>
-</ng-template>
+</div>
+

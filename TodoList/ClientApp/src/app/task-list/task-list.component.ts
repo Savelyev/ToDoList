@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../viewModel/task';
 import { TaskService } from '../services/task.service';
+import { FormControl, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-task-list',
@@ -9,6 +10,7 @@ import { TaskService } from '../services/task.service';
 })
 export class TaskListComponent implements OnInit {
 
+    public createTaskForm: FormGroup;
     task: Task = new Task();
     tasks: Task[];
     tableMode: boolean = true;
@@ -16,6 +18,12 @@ export class TaskListComponent implements OnInit {
     constructor(private dataService: TaskService) { }
 
     ngOnInit() {
+        this.createTaskForm = new FormGroup({
+            title: new FormControl(''),
+            description: new FormControl(''),
+            dueDateTime: new FormControl(''),
+            priority: new FormControl(''),
+        });
         this.loadTasks();
     }
 
@@ -24,7 +32,7 @@ export class TaskListComponent implements OnInit {
             .subscribe((data: Task[]) => this.tasks = data);
     }
 
-    save() {
+    sav2e() {
         if (this.task.id == null) {
             this.dataService.createTask(this.task)
                 .subscribe((data: Task) => this.tasks.push(data));
@@ -33,6 +41,23 @@ export class TaskListComponent implements OnInit {
                 .subscribe(data => this.loadTasks());
         }
         this.cancel();
+    }
+
+    public save = (formValue) => {
+        const formValues = { ...formValue };
+        const task: Task = {
+            description: formValues.description,
+            dueDateTime: formValues.dueDateTime,
+            priority: Number(formValues.priority),
+            title: formValues.title,
+        };
+        if (this.task.id == null) {
+            this.dataService.createTask(task)
+                .subscribe((data: Task) => this.tasks.push(data));
+        } else {
+            this.dataService.updateTask(task)
+                .subscribe(data => this.loadTasks());
+        }
     }
 
     editTask(task: Task) {

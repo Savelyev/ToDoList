@@ -25,7 +25,7 @@ export class RegisterUserComponent implements OnInit {
             confirm: new FormControl('')
         });
         this.registerForm.get('confirm').setValidators([Validators.required,
-        this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
+            this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
     }
 
     public validateControl = (controlName: string) => {
@@ -49,7 +49,7 @@ export class RegisterUserComponent implements OnInit {
                 this._router.navigate(["/authentication/login"]);
             },
                 error => {
-                    this.errorMessage = error;
+                    this.errorMessage = error.errors.join('</br>');
                     this.showError = true;
                 })
     }

@@ -11,5 +11,6 @@ namespace TodoList.Models
         public DateTime DueDateTime { get; set; }
         public PriorityLevel Priority { get; set; }
         public User User { get; set; }
+        public string UserId { get; set; }
     }
 }

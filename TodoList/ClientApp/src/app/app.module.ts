@@ -20,8 +20,7 @@ export function tokenGetter() {
         HttpClientModule,
         RouterModule.forRoot([
             { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
-            { path: 'tasks', loadChildren: () => import('./task-list/task.module').then(m => m.TaskModule), canActivate: [AuthGuard] },
-            { path: '', redirectTo: '/tasks', pathMatch: 'full' },
+            { path: '', loadChildren: () => import('./task-list/task.module').then(m => m.TaskModule), canActivate: [AuthGuard] },
             { path: '**', redirectTo: '/404', pathMatch: 'full' }
         ]),
         JwtModule.forRoot({

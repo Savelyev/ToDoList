@@ -5,6 +5,6 @@ namespace TodoList.Models
 {
     public class User : IdentityUser
     {
-        public List<Task> Tasks { get; set; }
+
     }
 }

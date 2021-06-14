@@ -52,7 +52,7 @@ export class RegisterUserComponent implements OnInit {
                 this._router.navigate([this._returnUrl]);
             },
                 error => {
-                    this.errorMessage = error.errors.join('</br>');
+                    this.errorMessage = error;
                     this.showError = true;
                 })
     }

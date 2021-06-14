@@ -8,29 +8,33 @@
 
         </div>
         <div class="col-7 auth-container">
-            <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)" class="auth-form">
-                <div class="form-container">
-                    <input type="email" id="email" formControlName="email" class="form-input" placeholder="E-mail">
-                    <div *ngIf="validateControl('email') && hasError('email', 'email')" class="form-validation">This address does not exist</div>
-                    <div *ngIf="validateControl('email') && hasError('email', 'required')" class="form-validation">Email is required</div>
-                </div>
-                <div class="form-container">
-                    <input type="password" id="password" formControlName="password" class="form-input" placeholder="Password">
-                    <div *ngIf="validateControl('password') && hasError('password', 'required')" class="form-validation">Password is required</div>
-                </div>
-                <div class="form-container">
-                    <input type="password" id="confirm" formControlName="confirm" class="form-input" placeholder="Confirm password">
-                    <div *ngIf="validateControl('confirm') && hasError('confirm', 'required')" class="form-validation">Confirmation is required</div>
-                    <div *ngIf="hasError('confirm', 'mustMatch')" class="form-validation">Passwords must match</div>
-                    <div *ngIf="showError" class="form-validation" [innerHTML]="errorMessage"></div>
-                </div>
-                <button type="submit" class="form-btn" [disabled]="!registerForm.valid">Sign Up</button>
-            </form>
+            <div class="auth-inner">
+                <h1 class="page-title _center">Sign Up</h1>
 
-            <p class="form-bottom-text">
-                I already have an account. <a class="form-bottom-text-link" [routerLink]="['/authentication/login']" routerLinkActive="active"
-                   [routerLinkActiveOptions]="{exact: true}">Sign In</a>
-            </p>
+                <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)" class="auth-form">
+                    <div class="form-container">
+                        <input type="email" id="email" formControlName="email" class="form-input" placeholder="E-mail">
+                        <div *ngIf="validateControl('email') && hasError('email', 'email')" class="form-validation">This address does not exist</div>
+                        <div *ngIf="validateControl('email') && hasError('email', 'required')" class="form-validation">Email is required</div>
+                    </div>
+                    <div class="form-container">
+                        <input type="password" id="password" formControlName="password" class="form-input" placeholder="Password">
+                        <div *ngIf="validateControl('password') && hasError('password', 'required')" class="form-validation">Password is required</div>
+                    </div>
+                    <div class="form-container">
+                        <input type="password" id="confirm" formControlName="confirm" class="form-input" placeholder="Confirm password">
+                        <div *ngIf="validateControl('confirm') && hasError('confirm', 'required')" class="form-validation">Confirmation is required</div>
+                        <div *ngIf="hasError('confirm', 'mustMatch')" class="form-validation">Passwords must match</div>
+                        <div *ngIf="showError" class="form-validation" [innerHTML]="errorMessage"></div>
+                    </div>
+                    <button type="submit" class="form-btn" [disabled]="!registerForm.valid">Sign Up</button>
+                </form>
+
+                <p class="form-bottom-text">
+                    I already have an account. <a class="form-bottom-text-link" [routerLink]="['/authentication/login']" routerLinkActive="active"
+                                                  [routerLinkActiveOptions]="{exact: true}">Sign In</a>
+                </p>
+            </div>
         </div>
     </div>
 </div>

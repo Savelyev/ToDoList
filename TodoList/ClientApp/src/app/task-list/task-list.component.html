@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="todo-create">
-                    <form [formGroup]="createTaskForm" autocomplete="off" novalidate (ngSubmit)="save(createTaskForm.value)" class="auth-form">
+                    <form [formGroup]="createTaskForm" autocomplete="off" novalidate (ngSubmit)="save(createTaskForm.value)" class="form todo-create-form">
                         <div class="form-container">
                             <input type="text" class="form-input" formControlName="title" placeholder="Enter task title">
                         </div>

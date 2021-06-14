@@ -12,5 +12,7 @@ namespace TodoList.Models
         public PriorityLevel Priority { get; set; }
         public User User { get; set; }
         public string UserId { get; set; }
+        public bool IsActive { get; set; }
+        public NotificationPeriod NotificationPeriod { get; set; }
     }
 }

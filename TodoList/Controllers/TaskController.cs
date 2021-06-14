@@ -64,8 +64,7 @@ namespace TodoList.Controllers
 
         private string getUserId()
         {
-            return User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //return userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result.Id;
+            return userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result.Id;
         }
     }
 }

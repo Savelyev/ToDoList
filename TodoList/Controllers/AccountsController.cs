@@ -26,19 +26,18 @@ namespace TodoList.Controllers
         public async Task<IActionResult> RegisterUser([FromBody] RegisterViewModel registerViewModel)
         {
             if (registerViewModel == null || !ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(new RegisterResponseViewModel { IsSuccessfulRegistration = false });
 
-            var result = await userManager.CreateAsync(
-                new User { Email = registerViewModel.Email, UserName = registerViewModel.Email }, 
-                registerViewModel.Password);
+            var user = new User { Email = registerViewModel.Email, UserName = registerViewModel.Email };
+            var result = await userManager.CreateAsync(user, registerViewModel.Password);
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(e => e.Description);
 
-                return BadRequest(new RegisterResponseViewModel { Errors = errors });
+                return BadRequest(new RegisterResponseViewModel { Errors = errors, IsSuccessfulRegistration = false });
             }
 
-            return StatusCode(201);
+            return Ok(new RegisterResponseViewModel { IsSuccessfulRegistration = true, Token = getToken(user) });
         }
 
         [HttpPost("Login")]
@@ -49,11 +48,16 @@ namespace TodoList.Controllers
             {
                 return Unauthorized(new AuthResponseViewModel { ErrorMessage = "Invalid Authentication" });
             }
+            
+            return Ok(new AuthResponseViewModel { IsAuthSuccessful = true, Token = getToken(user) });
+        }
+
+        private string getToken(User user)
+        {
             var signingCredentials = jwtHandler.GetSigningCredentials();
             var claims = jwtHandler.GetClaims(user);
             var tokenOptions = jwtHandler.GenerateTokenOptions(signingCredentials, claims);
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return Ok(new AuthResponseViewModel { IsAuthSuccessful = true, Token = token });
+            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
     }
 }

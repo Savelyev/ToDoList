@@ -47,6 +47,7 @@ namespace TodoList.JwtFeatures
                 issuer: _jwtSettings.GetSection(validIssuerSection).Value,
                 audience: _jwtSettings.GetSection(validAudienceSection).Value,
                 claims: claims,
+                expires: DateTime.Now.AddYears(1),
                 signingCredentials: signingCredentials);
             return tokenOptions;
         }

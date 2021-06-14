@@ -3,7 +3,7 @@ import { AuthenticationService } from './../../services/authentication.service';
 import { PasswordConfirmationValidatorService } from './../../shared/custom-validators/password-confirmation-validator.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-register-user',
@@ -14,9 +14,10 @@ export class RegisterUserComponent implements OnInit {
     public registerForm: FormGroup;
     public errorMessage: string = '';
     public showError: boolean;
+    private _returnUrl: string;
 
     constructor(private _authService: AuthenticationService, private _passConfValidator: PasswordConfirmationValidatorService,
-        private _router: Router) { }
+        private _router: Router, private _route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.registerForm = new FormGroup({
@@ -26,6 +27,7 @@ export class RegisterUserComponent implements OnInit {
         });
         this.registerForm.get('confirm').setValidators([Validators.required,
             this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
+        this._returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     public validateControl = (controlName: string) => {
@@ -45,8 +47,9 @@ export class RegisterUserComponent implements OnInit {
             confirmPassword: formValues.confirm
         };
         this._authService.registerUser("api/accounts/registration", user)
-            .subscribe(_ => {
-                this._router.navigate(["/authentication/login"]);
+            .subscribe(res => {
+                localStorage.setItem("token", res.token);
+                this._router.navigate([this._returnUrl]);
             },
                 error => {
                     this.errorMessage = error.errors.join('</br>');
